@@ -1,0 +1,16 @@
+body {
+  text-align: center;
+}
+
+.drop-zone {
+  padding: 20px;
+  background-color: #e7eaee;
+  border: dashed 1px black;
+  cursor: pointer;
+}
+
+.input-url {
+  width: 550px;
+  margin-top: 10px;
+  background-color: #e7eaee;
+}
