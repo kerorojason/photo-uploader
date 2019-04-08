@@ -73,18 +73,22 @@ class App extends Component {
       }
     }
   };
+
   handleImageLoaded = image => {
     // console.log(image);
   };
+
   handleOnCropChange = crop => {
     this.setState({ crop });
   };
+
   handleOnCropComplete = (crop, pixelCrop) => {
     // console.log(crop, pixelCrop);
     const canvasRef = this.imagePreviewCanvasRef.current;
     const { imgSrc } = this.state; //original base64 image
     image64toCanvasRef(canvasRef, imgSrc, pixelCrop);
   };
+
   handleDownloadClick = e => {
     e.preventDefault();
     const { imgSrc, imgSrcExt } = this.state; //original base64 image
@@ -121,13 +125,18 @@ class App extends Component {
     this.setState({ url: e.target.value });
   };
   handleOnURLSubmit = e => {
-    fetch(this.state.url).then(response => {
+    fetch(this.state.url, {
+      mode: 'cors'
+    }).then(response => {
       response.arrayBuffer().then(buffer => {
         var base64Flag = 'data:image/jpeg;base64,';
         var imageStr = this.arrayBufferToBase64(buffer);
 
         // document.querySelector('img').src = base64Flag + imageStr;
-        this.setState({ imgSrc: base64Flag + imageStr });
+        this.setState({
+          imgSrc: base64Flag + imageStr,
+          imgSrcExt: extractImageFileExtensionFromBase64(base64Flag + imageStr)
+        });
       });
     });
   };
@@ -135,9 +144,7 @@ class App extends Component {
   arrayBufferToBase64(buffer) {
     var binary = '';
     var bytes = [].slice.call(new Uint8Array(buffer));
-
     bytes.forEach(b => (binary += String.fromCharCode(b)));
-
     return window.btoa(binary);
   }
   render() {
